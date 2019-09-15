@@ -1,36 +1,19 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
+@Component
+public class UserDto {
 
-@Entity
-@Table(name="\"user\"")
-public class User{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column
     private String username;
 
-    @Column
-    @JsonIgnore
     private String password;
 
-    @Column
     private String firstname;
 
-    @Column
     private String lastname;
 
-    @Column
     private String email;
-
-    public long getId() {
-        return id;
-    }
 
     public String getFirstname() {
         return firstname;
@@ -70,13 +53,5 @@ public class User{
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
     }
 }

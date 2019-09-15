@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.model.User;
+import com.example.demo.model.UserDto;
 import com.example.demo.repository.UserDao;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +22,9 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Autowired
     private PasswordEncoder bCryptEncoder;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.findByUsername(username);
@@ -28,10 +33,15 @@ public class JwtUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),new ArrayList<>());
     }
 
-    public User saveUser(User user)
+    public User saveUser(UserDto userDto)
     {
-        System.out.println(user);
-        user.setPassword(bCryptEncoder.encode(user.getPassword()));
+        User user = convertToEntity(userDto);
         return userDao.save(user);
+    }
+
+    private User convertToEntity(UserDto userDto) {
+        User user = modelMapper.map(userDto,User.class);
+        user.setPassword(bCryptEncoder.encode(user.getPassword()));
+        return user;
     }
 }

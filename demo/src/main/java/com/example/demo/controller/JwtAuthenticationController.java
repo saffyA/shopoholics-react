@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.User;
+import com.example.demo.model.UserDto;
 import com.example.demo.repository.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +32,7 @@ public class JwtAuthenticationController {
     @Autowired
     private UserDao userDao;
 
+
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
@@ -52,9 +53,8 @@ public class JwtAuthenticationController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> saveUserInDatabase(@RequestBody User user) throws Exception {
-        System.out.println(user);
-        return ResponseEntity.ok(userDetailsService.saveUser(user));
+    public ResponseEntity<?> saveUserInDatabase(@RequestBody UserDto userDto) throws Exception {
+        return ResponseEntity.ok(userDetailsService.saveUser(userDto));
     }
 
     @GetMapping(value = "/checkUsername/{usernameToBeChecked}")

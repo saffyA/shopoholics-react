@@ -3,6 +3,12 @@ import { exists } from 'fs';
 import getAxios from './axiosApi';
 
 class AuthenticationService{
+
+    createUser(user)
+    {
+        return axios.post("http://localhost:8080/register",user);
+    }
+
     executeBasicAuthenticationService(username,password){
         return axios.get("http://localhost:8080/basicauth",
             {headers: { authorization: this.createBasicAuthenticationToken(username,password)}}

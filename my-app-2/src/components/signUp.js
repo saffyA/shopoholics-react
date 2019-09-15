@@ -8,6 +8,16 @@ class SignUp extends Component{
 
     onSubmit = (fields) =>{
         console.log("in on submit",fields);
+        let user = {
+            username: fields.username,
+            password: fields.password,
+            firstname: fields.firstName,
+            lastname: fields.lastName,
+            email: fields.email
+        };
+        console.log(user);
+        AuthenticationService.createUser(user)
+            .then( () => this.props.history.push('/login'))
     }
 
     async validateUsername(value){
@@ -23,6 +33,7 @@ class SignUp extends Component{
         return (
             <Formik
                 initialValues={{
+                    username: '',
                     firstName: '',
                     lastName: '',
                     email: '',
@@ -30,6 +41,8 @@ class SignUp extends Component{
                     confirmPassword: ''
                 }}
                 validationSchema={Yup.object().shape({
+                    username: Yup.string()
+                        .required('Username is required'),
                     firstName: Yup.string()
                         .required('First Name is required'),
                     lastName: Yup.string()
@@ -53,8 +66,13 @@ class SignUp extends Component{
                     <h3>Sign Up Now!</h3><br />
                     <Form>
                         <div className="form-group col-md-4 mb-3">
+                            <label htmlFor="username">Username</label>
+                            <Field name="username" type="text" className={'form-control' + (errors.username && touched.username ? ' is-invalid' : '')} validate={this.validateUsername}/>
+                            <ErrorMessage name="username" component="div" className="invalid-feedback" />
+                        </div>
+                        <div className="form-group col-md-4 mb-3">
                             <label htmlFor="firstName">First Name</label>
-                            <Field name="firstName" type="text" className={'form-control' + (errors.firstName && touched.firstName ? ' is-invalid' : '')} validate={this.validateUsername}/>
+                            <Field name="firstName" type="text" className={'form-control' + (errors.firstName && touched.firstName ? ' is-invalid' : '')} />
                             <ErrorMessage name="firstName" component="div" className="invalid-feedback" />
                         </div>
                         <div className="form-group col-md-4 mb-3">
